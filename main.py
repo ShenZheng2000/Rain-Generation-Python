@@ -73,11 +73,17 @@ def alpha_rain(rain, img, img_name, out_dir, beta=0.8):
     cv2.imwrite(os.path.join(out_dir, os.path.basename(img_name)), rain_result)
 
 
-def process(img_name, out_dir):
+def process(img_name,
+            out_dir,
+            noise,
+            rain_len,
+            rain_angle,
+            rain_thickness,
+            alpha):
     img = cv2.imread(img_name)
-    noise = get_noise(img, value=500)
-    rain = rain_blur(noise, length=50, angle=-30, w=3)
-    alpha_rain(rain, img, img_name, out_dir, beta=0.7)
+    noise = get_noise(img, value=noise)
+    rain = rain_blur(noise, length=rain_len, angle=rain_angle, w=rain_thickness)
+    alpha_rain(rain, img, img_name, out_dir, beta=alpha)
 
 
 if __name__ == '__main__':
@@ -85,10 +91,24 @@ if __name__ == '__main__':
 
     parser.add_argument("--input_dir", type=str, default='C:/Users/Lebron/Desktop/CUSTOM_IMAGE/CityScape150/*.png')
     parser.add_argument("--output_dir", type=str, default='D:/Code/AAAI_2022/results/CityScape150_rain')
+    parser.add_argument("--noise", type=int, default=500)
+    parser.add_argument("--rain_len", type=int, default=50)
+    parser.add_argument("--rain_angle", type=int, default=-30) # negative means rain streaks leans left
+    parser.add_argument("--rain_thickness", type=int, default=3)
+    parser.add_argument("--alpha", type=float, default=0.7)
+
+
     config = parser.parse_args()
 
     for file in glob.glob(config.input_dir):
-        process(img_name = file, out_dir = config.output_dir)
+        process(img_name = file,
+                out_dir = config.output_dir,
+                noise = config.noise,
+                rain_len = config.rain_len,
+                rain_angle = config.rain_angle,
+                rain_thickness = config.rain_thickness,
+                alpha = config.alpha
+                )
 
 
 
