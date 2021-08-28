@@ -73,13 +73,7 @@ def alpha_rain(rain, img, img_name, out_dir, beta=0.8):
     cv2.imwrite(os.path.join(out_dir, os.path.basename(img_name)), rain_result)
 
 
-def process(img_name,
-            out_dir,
-            noise,
-            rain_len,
-            rain_angle,
-            rain_thickness,
-            alpha):
+def process(img_name, out_dir, noise, rain_len, rain_angle, rain_thickness, alpha):
     img = cv2.imread(img_name)
     noise = get_noise(img, value=noise)
     rain = rain_blur(noise, length=rain_len, angle=rain_angle, w=rain_thickness)
